@@ -20,7 +20,7 @@ module.exports = function(grunt) {
           'public/client/createLinkView.js',
           'public/client/router.js' 
         ],
-        dest: 'public/dist/<%= pkg.name %>.js'
+        dest: 'public/dist/<%= pkg.name %>.min.js'
       },
     },
 
@@ -42,14 +42,20 @@ module.exports = function(grunt) {
     uglify: {
       my_target: {
         files: {
-          'public/dist/shortly-deploy.min.js': ['public/dist/shortly-deploy.js']
+          'public/dist/shortly-deploy.min.js': ['public/dist/shortly-deploy.min.js']
         }
       }
     },
 
     eslint: {
       target: [
-        // Add list of files to lint here...
+        'public/client/app.js',
+        'public/client/link.js',
+        'public/client/links.js',
+        'public/client/linkView.js',
+        'public/client/linksView.js',
+        'public/client/createLinkView.js',
+        'public/client/router.js' 
       ]
     },
 
@@ -59,7 +65,7 @@ module.exports = function(grunt) {
           expand: true, 
           cwd: 'public',
           src: ['*.css', '!*.min.css'],
-          dest: 'public',
+          dest: 'public/dist',
           ext: '.min.css'
         }]
       }
@@ -72,6 +78,7 @@ module.exports = function(grunt) {
           'public/lib/**/*.js',
         ],
         tasks: [
+          'esline',
           'concat',
           'uglify'
         ]
@@ -85,6 +92,9 @@ module.exports = function(grunt) {
     shell: {
       prodServer: {
         command: 'git push live master'
+      },
+      dev: {
+        command: 'rm -f public/dist/shortly-deploy.js'
       }
     }
   });
@@ -111,7 +121,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'eslint', 'concat', 'uglify'
+    'eslint', 'mochaTest', 'concat', 'uglify', 'cssmin'
   ]);
 
   grunt.registerTask('upload', function(n) {
