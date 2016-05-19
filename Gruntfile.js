@@ -4,11 +4,23 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       options: {
-        separator: ';',
+        separator: ';'
       },
       dist: {
-        src: [ 'server.js', 'server-config.js' ],
-        dest: 'built.js',
+        src: [ 
+          'public/lib/jquery.js',
+          'public/lib/underscore.js', 
+          'public/lib/backbone.js',
+          'public/lib/handlebars.js',
+          'public/client/app.js',
+          'public/client/link.js',
+          'public/client/links.js',
+          'public/client/linkView.js',
+          'public/client/linksView.js',
+          'public/client/createLinkView.js',
+          'public/client/router.js' 
+        ],
+        dest: 'public/dist/<%= pkg.name %>.js'
       },
     },
 
@@ -28,6 +40,11 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      my_target: {
+        files: {
+          'public/dist/shortly-deploy.min.js': ['public/dist/shortly-deploy.js']
+        }
+      }
     },
 
     eslint: {
@@ -37,6 +54,15 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
+      target: {
+        files: [{
+          expand: true, 
+          cwd: 'public',
+          src: ['*.css', '!*.min.css'],
+          dest: 'public',
+          ext: '.min.css'
+        }]
+      }
     },
 
     watch: {
@@ -85,7 +111,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'eslist', 'concat', 'uglify'
+    'eslint', 'concat', 'uglify'
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -97,7 +123,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
-    'upload'
+    'build', 'upload --prod'
   ]);
 
   grunt.registerTask('live', [
