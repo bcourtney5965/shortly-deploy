@@ -3,6 +3,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        separator: ';',
+      },
+      dist: {
+        src: [ 'server.js', 'server-config.js' ],
+        dest: 'built.js',
+      },
     },
 
     mochaTest: {
@@ -78,6 +85,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'eslist', 'concat', 'uglify'
   ]);
 
   grunt.registerTask('upload', function(n) {
