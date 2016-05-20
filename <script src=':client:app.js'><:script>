@@ -1,0 +1,16 @@
+<script src='/client/app.js'></script>
+<script src='/client/link.js'></script>
+<script src='/client/links.js'></script>
+<script src='/client/linkView.js'></script>
+<script src='/client/linksView.js'></script>
+<script src='/client/createLinkView.js'></script>
+<script src='/client/router.js'></script>
+
+// took off the minification/concat on watch
+// took of the code below - I don't know what it does
+// Either way watch doens't 'work' - eslint doesn't fix typos upon save
+      // ,
+      // css: {
+      //   files: 'public/*.css',
+      //   tasks: ['cssmin']
+      // }
