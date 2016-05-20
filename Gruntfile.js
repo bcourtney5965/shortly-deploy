@@ -78,14 +78,9 @@ module.exports = function(grunt) {
           'public/lib/**/*.js',
         ],
         tasks: [
-          'esline',
-          'concat',
-          'uglify'
+          // 'shell:lint',
+          'eslint'
         ]
-      },
-      css: {
-        files: 'public/*.css',
-        tasks: ['cssmin']
       }
     },
 
@@ -95,6 +90,9 @@ module.exports = function(grunt) {
       },
       dev: {
         command: 'rm -f public/dist/shortly-deploy.js'
+      },
+      lint: {
+        command: 'eslint public/client/app.js --fix'
       }
     }
   });
@@ -121,7 +119,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'eslint', 'mochaTest', 'concat', 'uglify', 'cssmin'
+    'eslint', 'mochaTest'
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -133,7 +131,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
-    'build', 'upload --prod'
+    'build', 'concat', 'uglify', 'cssmin', 'upload'
   ]);
 
   grunt.registerTask('live', [
